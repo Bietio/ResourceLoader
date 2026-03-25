@@ -14,7 +14,7 @@ class Loader extends PluginBase
 }
 ```
 `plugin.yml`
-```
+```yml
 resources: [
   "config.yml"
 ]
