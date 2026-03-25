@@ -28,7 +28,7 @@ final class ResourceLoader
     const FILE = "file";
 
     /** @var PluginBase */
-    private $plugin = null;
+    private static $plugin = null;
 
     /**
      * @param PluginBase $plugin
@@ -47,9 +47,12 @@ final class ResourceLoader
 
         $pluginFile = new Config($file . 'plugin.yml', Config::YAML);
 
-        $resources = (array) $pluginFile->get("resources", 
-            throw new Exception("The key \"resources\" not is setted")
-        );
+        $resources = (array) $pluginFile->get("resources");
+        
+        if ($resources === false) 
+        {
+            throw new Exception("The key \"resources\" not is setted");
+        }
 
         foreach ($resources as $resource) 
         {
