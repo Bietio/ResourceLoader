@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Insland\Utils;
+namespace Plugin;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
