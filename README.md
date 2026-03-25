@@ -1,7 +1,7 @@
 # ResourceLoader
 Load file resources of plugins (PocketMine-MP)
 
-How use:
+`Loader.php`
 ```php
 
 class Loader extends PluginBase
@@ -13,3 +13,11 @@ class Loader extends PluginBase
   }
 }
 ```
+`plugin.yml`
+```
+resources: [
+  "config.yml"
+]
+```
+
+If the file not exists, the `ResourceLoader` throw Exception.
