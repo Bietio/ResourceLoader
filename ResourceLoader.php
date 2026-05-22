@@ -23,7 +23,7 @@ use Exception;
 final class ResourceLoader
 {
 
-    const DIRECTORY = "directory";
+    const DIRECTORY = "dir";
 
     const FILE = "file";
 
@@ -49,30 +49,26 @@ final class ResourceLoader
     {
         self::$plugin = $plugin;
 
-        if(strpos($file, ".phar") === true) 
+        if(self::isPhar($file)) 
         {
-            $file = "phar://" . $file;
+            $file = "phar://{$file}plugin.yml";
         }
 
-        $pluginFile = new Config($file . 'plugin.yml', Config::YAML);
+        $file = new Config($file, Config::YAML);
 
-        $resources = (array) $pluginFile->get("resources");
+        $resources = (array) $file->get('resources', false);
         
         if ($resources === false) 
-        {
             throw new Exception("The key \"resources\" not is setted");
-        }
 
-        foreach ($resources as $resource) 
-        {
-            $path = self::withDataFolder($resource);
-
-            $directory = (string) pathinfo($path, PATHINFO_DIRNAME);
+        foreach ($resources as $resource):
+            $path = self::getDataFile($resource);
+            $dirname  = (string) pathinfo($path, PATHINFO_DIRNAME);
             $basename = (string) pathinfo($path, PATHINFO_BASENAME);
 
-            if (!self::isLoaded($directory, self::DIRECTORY)) 
+            if (!self::isLoaded($dirname, self::DIRECTORY)) 
             {
-                mkdir($directory, 0777, true);
+                mkdir($dirname, 0777, true);
             } 
 
             if (!self::isLoaded($path, self::FILE) && $basename !== ".") 
@@ -80,30 +76,47 @@ final class ResourceLoader
                 if ($plugin->saveResource($resource) === false) 
                     throw new Exception("File \"{$resource}\" not found in the resources folder");
             }
-        }
+        endforeach;
     }
 
+    /**
+     * Return the file with data folder
+     * @param string $file
+     * @throws Exception
+     * @return string
+     */
     public static function getDataFile(string $file = ''): string
     {
         if (is_null(self::$plugin)) 
-        {
             throw new Exception("Need init the ResourceLoader");
-        }
 
-        return self::$plugin->getDataFolder() . $file;
+        return self::$plugin->getDataFolder() . "$file";
     }
+    
+    /**
+     * @param string $file
+     * @param int $type
+     * @param array $default
+     * @param ?bool $correct
+     * @return Config
+     */
+    public static function newConfig(string $file, int $type, array $default = [], bool &$correct = null)
+    {
         return new Config($file, $type, $default, $correct);
+    }
+
+    /**
+     * @param string $resource
+     * @param string $type
+     * @return bool
+     */
     public static function isLoaded(string $resource, string $type = self::DIRECTORY): bool
     {
         if (is_dir($resource) && $type === self::DIRECTORY) 
-        {
             return true;
-        }
 
         if (is_file($resource) && $type === self::FILE) 
-        {
             return true;
-        }
 
         return false;
     }
