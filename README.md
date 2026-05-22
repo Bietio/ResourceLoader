@@ -7,10 +7,14 @@ Load file resources of plugins (PocketMine-MP)
 class Loader extends PluginBase
 {
 
+  /**
+   * @return void
+   */
   public function onLoad() 
   {
     ResourceLoader::init($this, $this->getFile());
   }
+
 }
 ```
 `plugin.yml`
