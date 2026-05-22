@@ -83,7 +83,7 @@ final class ResourceLoader
         }
     }
 
-    public static function withDataFolder(string $file): string
+    public static function getDataFile(string $file = ''): string
     {
         if (is_null(self::$plugin)) 
         {
