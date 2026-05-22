@@ -92,7 +92,7 @@ final class ResourceLoader
 
         return self::$plugin->getDataFolder() . $file;
     }
-
+        return new Config($file, $type, $default, $correct);
     public static function isLoaded(string $resource, string $type = self::DIRECTORY): bool
     {
         if (is_dir($resource) && $type === self::DIRECTORY) 
