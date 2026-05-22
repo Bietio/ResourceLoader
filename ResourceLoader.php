@@ -31,6 +31,15 @@ final class ResourceLoader
     private static $plugin = null;
 
     /**
+     * @param string $file
+     * @return bool
+     */
+    public static function isPhar(string $file): bool
+    {
+        return (pathinfo($file, PATHINFO_EXTENSION) === 'phar');        
+    }
+    
+    /**
      * @param PluginBase $plugin
      * @param string $file
      * @throws Exception
