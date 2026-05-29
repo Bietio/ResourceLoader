@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace MLGBlock\utils;
+namespace Plugin;
 
 use pocketmine\plugin\PluginBase;
 
