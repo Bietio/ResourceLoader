@@ -14,7 +14,7 @@ class Loader extends PluginBase
    */
   public function onLoad() 
   {
-    ResourceLoader::loadResource($this);
+    self::loadResource($this);
   }
 
 }
